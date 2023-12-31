@@ -23,3 +23,5 @@ assert braz.fichas == 20
 
 braz.fichasapostadas = 10
 assert braz.fichasapostadas == 10
+
+del braz

@@ -36,3 +36,27 @@ class jogador():
     @fichasapostadas.setter
     def fichasapostadas(self, fichasapostadas_novas):
         self._fichasapostadas = fichasapostadas_novas
+
+    def jogagada(self):
+        escolha = input()
+        
+    def holdar(self):
+        pass    
+
+    def desistir(self):
+        pass
+    
+    def apostar(self,valor):
+        self.fichasapostadas = valor
+
+    def igualaraposta(self,aposta_atual):
+        self.fichasapostadas = aposta_atual
+
+    def descontaraposta(self):
+        self.fichas = (self.fichas) - (self.fichasapostadas) 
+
+
+    def __del__(self):
+        del self.cartas
+
+    

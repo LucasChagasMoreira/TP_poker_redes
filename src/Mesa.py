@@ -1,8 +1,6 @@
 from Deck import Deck
 from jogador import jogador
-def menu():
-    num = int(input("digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
-    return num
+from funcoes_auxiliares import *
 
 class Mesa:
     # construtor da classe. Recebe apenas as fichas como parametro e inicializa um vetor e um Deck
@@ -21,13 +19,24 @@ class Mesa:
     #funçao pricipal do jogo
     def Iniciar_jogo(self):
         num = menu()
-        print(num)
-        for i in range(num):         
-            aux = jogador(1000,0)
-            self.Adiciona_jogador(aux)
-        for i in range (num):
-            print(type(self._lista_de_jogadores[i]))
+        addjogadores(self,num)
+        exibirjogadores(self)
+            
+    
+    def quantidadedejogadores(self):
+        return len(self._lista_de_jogadores)
 
+    @property
+    def fichas(self):
+        return self._fichas
 
-mesa = Mesa(0)
-mesa.Iniciar_jogo()
+    # Setter para atualizar a quantidade de fichas do jogador
+    @fichas.setter
+    def fichas(self, novas_fichas):
+        self._fichas = novas_fichas
+
+    def __del__(self):
+        del self._cartas
+        for i in range(self.quantidadedejogadores()):
+            del self._lista_de_jogadores[i]
+

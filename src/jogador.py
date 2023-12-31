@@ -1,4 +1,5 @@
-from Deck import Deck  # Importa a classe Deck de um módulo chamado Deck
+from Deck import *  # Importa a classe Deck de um módulo chamado Deck
+
 
 class jogador():
     def __init__(self, nome, fichas, fichasapostadas):
@@ -37,26 +38,30 @@ class jogador():
     def fichasapostadas(self, fichasapostadas_novas):
         self._fichasapostadas = fichasapostadas_novas
 
-    def jogagada(self):
+    def jogada(self):
+        menu_jogada()
         escolha = input()
+        if escolha == "1":
+            self.holdar()
+        elif escolha == '2':
+            self.desistir()
+        elif escolha == '3':
+            self.call()
+        elif escolha == '4':
+            self.aumentar_apostar()
         
     def holdar(self):
-        pass    
+        print("holdou")    
 
     def desistir(self):
-        pass
-    
-    def apostar(self,valor):
+        print("desistiu")
+
+    def aumentar_apostar(self,valor):
         self.fichasapostadas = valor
 
-    def igualaraposta(self,aposta_atual):
+    def call(self,aposta_atual):
         self.fichasapostadas = aposta_atual
 
     def descontaraposta(self):
         self.fichas = (self.fichas) - (self.fichasapostadas) 
-
-
-    def __del__(self):
-        del self.cartas
-
-    
+  

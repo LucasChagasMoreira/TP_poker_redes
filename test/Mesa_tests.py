@@ -22,3 +22,5 @@ assert mesa.fichas == 0
 braz.fichas = 900
 
 assert braz.fichas == 900
+
+mesa.Iniciar_jogo()

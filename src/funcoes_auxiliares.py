@@ -1,4 +1,6 @@
 
+def desenha_linha():
+    print("---------------------------------------------------------------------------------------------------------------")
 
 def menu():
     num = int(input("digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))

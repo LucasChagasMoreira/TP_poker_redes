@@ -38,30 +38,23 @@ class jogador():
     def fichasapostadas(self, fichasapostadas_novas):
         self._fichasapostadas = fichasapostadas_novas
 
-    def jogada(self):
-        menu_jogada()
-        escolha = input()
-        if escolha == "1":
-            self.holdar()
-        elif escolha == '2':
-            self.desistir()
-        elif escolha == '3':
-            self.call()
-        elif escolha == '4':
-            self.aumentar_apostar()
-        
+    # nao aposta e nao desiste        
     def holdar(self):
         print("holdou")    
 
+    # desiste ate outro set
     def desistir(self):
         print("desistiu")
 
+    # aposta um valor maior que a aposta atual
     def aumentar_apostar(self,valor):
         self.fichasapostadas = valor
 
+    # aposta um valor identico a aposta atual
     def call(self,aposta_atual):
         self.fichasapostadas = aposta_atual
 
+    #
     def descontaraposta(self):
         self.fichas = (self.fichas) - (self.fichasapostadas) 
   

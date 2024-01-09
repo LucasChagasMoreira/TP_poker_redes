@@ -29,41 +29,55 @@ class Mesa:
     def Remover_jogador(self,indice):
         self._lista_de_jogadores.pop(indice)
 
+    # Exibe os jogadores
+    def quantidadedejogadores(self):
+        return len(self._lista_de_jogadores)
+    
+    # faz o desconto de todas as apostas
+    def descontarapostas(self):
+        for i in range(self.quantidadedejogadores()):
+            self._lista_de_jogadores[i].descontaraposta()
+
+    #retorna o indice de um jogador no vetor de jogadores baseado em seu nome
+    def indice_jogador(self, nome_do_jogador):
+        for i in range(self.quantidadedejogadores()):
+            if nome_do_jogador == self._lista_de_jogadores[i].nome:
+                return i
+            
+
+    # remove desistentes da rodada
+    def removerdesistentes(self,desistentes):
+        for i in range(len(desistentes)):
+            indice_do_desistente = self.indice_jogador(desistentes[i])
+            print(f'jogador {self._lista_de_jogadores[indice_do_desistente].nome}, desistiu.')
+            self.Remover_jogador(indice_do_desistente)
+
     #funçao pricipal do jogo
     def Iniciar_jogo(self):
         num = menu()
         maioraposta = 0
         self.addjogadores(num)
         desistentes = []
+        historico_de_desistentes = []
 
         while(True):
             for j in range(3):
                 print(f'rodada:{j+1}')
                 
                 for i in range(self.quantidadedejogadores()):
-                    
-                    print(f'jogador {self._lista_de_jogadores[i].nome}:')
-                    menu_jogada()
-                    escolha = input()
-                    if escolha == "1":
-                        self._lista_de_jogadores[i].holdar()
-
-                    elif escolha == '2':
-                        self._lista_de_jogadores[i].desistir()
-                        desistentes.append(self._lista_de_jogadores[i])
-                        self.Remover_jogador(i)
-
-                    elif escolha == '3':
-                        self._lista_de_jogadores[i].call(maioraposta)
-
-                    elif escolha == '4':
-                        aposta = int(input("digite o valor que deseja apostar"))
-                        self._lista_de_jogadores[i].aumentar_apostar(aposta)
-                        maioraposta = aposta
-
-                
+                   resultado_jogada = self._lista_de_jogadores[i].jogada(maioraposta) 
+                   if resultado_jogada == '2':
+                        desistentes.append(self._lista_de_jogadores[i].nome)
+                        historico_de_desistentes.append(self._lista_de_jogadores[i])
+                   elif resultado_jogada == '4':
+                       maioraposta = resultado_jogada[1]
+                            
                 self.exibir_acoes()
-                print(f"fim da rodada {i + 1}")
+                self.removerdesistentes(desistentes)
+                desistentes.clear()
+                self.descontarapostas()
+                print(f"fim da rodada {j + 1}")
+            
             
             rodada = input("deseja jogar mais uma rodada? (Y/N)")
             if rodada == "Y":
@@ -73,9 +87,7 @@ class Mesa:
                 break
 
     
-    # Exibe os jogadores
-    def quantidadedejogadores(self):
-        return len(self._lista_de_jogadores)
+   
     
     #menu que mostra as fichas dos jogadores
     def exibir_acoes(self):

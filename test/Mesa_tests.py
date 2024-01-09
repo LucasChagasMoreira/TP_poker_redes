@@ -13,7 +13,7 @@ mesa.Adiciona_jogador(braz)
 
 assert mesa.quantidadedejogadores() == 1
 
-mesa.Remover_jogador(braz,0)
+mesa.Remover_jogador(0)
 
 assert mesa.quantidadedejogadores() == 0
 

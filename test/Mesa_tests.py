@@ -1,7 +1,6 @@
 import sys
 sys.path.append('../src')
 
-from Deck import Deck
 from jogador import jogador
 from funcoes_auxiliares import *
 from Mesa import Mesa

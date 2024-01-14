@@ -4,10 +4,24 @@ from jogador import *
 class Mesa:
     # construtor da classe. Recebe apenas as fichas como parametro e inicializa um vetor e um Deck
     def __init__(self,fichas):
-        self._cartas = Deck()
+        self._baralho = criar_baralho()
+        self._cartas = []
         self._lista_de_jogadores = []
         self._fichas = fichas
     
+    # adiciona cartas a mao da mesa
+    def distribuir_cartas_comunitarias(self,qtd):
+        aux = distribuir_cartas(self._baralho,qtd)
+        for i in range(qtd):
+            self._cartas.append(aux[i])
+
+    # distribui 2 cartas para todos os jogadores
+    def distribuir_cartas_para_jogadores(self):
+        for i in range(self.quantidadedejogadores()):
+            self._lista_de_jogadores[i]._cartas = (distribuir_cartas(self._baralho,2))
+
+
+
     # exibe as fichas e os nomes dos jogaores
     def exibirjogadores(self):
         for i in range(self.quantidadedejogadores()):
@@ -25,6 +39,7 @@ class Mesa:
     # função que adiciona jogadores ao vetor de jogadores
     def Adiciona_jogador(self, jogador):
         self._lista_de_jogadores.append(jogador)
+
     # função que remove jogadores do vetor de jogadores
     def Remover_jogador(self,indice):
         self._lista_de_jogadores.pop(indice)
@@ -44,7 +59,6 @@ class Mesa:
             if nome_do_jogador == self._lista_de_jogadores[i].nome:
                 return i
             
-
     # remove desistentes da rodada
     def removerdesistentes(self,desistentes):
         for i in range(len(desistentes)):
@@ -52,42 +66,97 @@ class Mesa:
             print(f'jogador {self._lista_de_jogadores[indice_do_desistente].nome}, desistiu.')
             self.Remover_jogador(indice_do_desistente)
 
+    def definir_vencedor(self):
+        maos_dos_jogadores = []
+        for i in range(self.quantidadedejogadores()):
+            maos_dos_jogadores.append(verificar_mao(self._lista_de_jogadores[i]._cartas + self._cartas))
+                
+        mapeamento_de_maos = {'royale_flush': 9, 'straight_flush': 8, 'quadra': 7, 'full_house': 6, 'flush': 5, 'straight':4, 'trinca':3, 'dois_pares':2, 'dupla':1, 'carta_alta':0}
+        #vetor numerico representando as maos dos jogadores
+        valores_numericos = [mapeamento_de_maos[valor] for valor in maos_dos_jogadores]
+        return valores_numericos
+
+    def distribuir_para_vencedores(self,lista):
+        indices = indices_do_maior(lista)
+        print(f'set do(s) jogadore(s): ')
+        for i in range(len(indices)):
+            self._lista_de_jogadores[indices[i]].fichas += (self.fichas / len(indices))
+            print(f'{self._lista_de_jogadores[indices[i]].nome} recebeu: {self.fichas / len(indices)} fichas.')
+            
+
     #funçao pricipal do jogo
     def Iniciar_jogo(self):
         num = menu()
         maioraposta = 0
         self.addjogadores(num)
         desistentes = []
-        historico_de_desistentes = []
+
+        #copiando as posiçoes originais dos jogadores
+        posiçoes_iniciais = []
+        for i in range(self.quantidadedejogadores()):
+            posiçoes_iniciais.append(self._lista_de_jogadores[i])
 
         while(True):
+            self.distribuir_cartas_para_jogadores()
             for j in range(3):
-                print(f'rodada:{j+1}')
+                
+                print(f'Rodada: {j+1}')
+                print(f'Aposta atual: {maioraposta}.')
+                desenha_linha()
                 
                 for i in range(self.quantidadedejogadores()):
-                   resultado_jogada = self._lista_de_jogadores[i].jogada(maioraposta) 
-                   if resultado_jogada == '2':
+                   self._lista_de_jogadores[i].exibir_cartas()
+                   self.exibir_cartas_comunitarias()
+                   desenha_linha()
+                   resultado_jogada = self._lista_de_jogadores[i].jogada(maioraposta)
+                   desenha_linha()
+
+                   if resultado_jogada[0] == '2':
                         desistentes.append(self._lista_de_jogadores[i].nome)
-                        historico_de_desistentes.append(self._lista_de_jogadores[i])
-                   elif resultado_jogada == '4':
+                   elif resultado_jogada[0] == '3':
+                       self.fichas += maioraposta
+                   elif resultado_jogada[0] == '4':
                        maioraposta = resultado_jogada[1]
-                            
+                       self.fichas += maioraposta
+                       print(resultado_jogada)
+                       print(maioraposta)
+
+
                 self.exibir_acoes()
+                self.descontarapostas()
+                
                 self.removerdesistentes(desistentes)
                 desistentes.clear()
-                self.descontarapostas()
-                print(f"fim da rodada {j + 1}")
+
+                if j == 0:
+                    self.distribuir_cartas_comunitarias(3)
+                else:
+                    self.distribuir_cartas_comunitarias(1)
+
+
+                print(f'Fim da rodada {j + 1}')
             
-            
-            rodada = input("deseja jogar mais uma rodada? (Y/N)")
+            valores_numericos = self.definir_vencedor()
+            for i in range(self.quantidadedejogadores()):
+                print(self._lista_de_jogadores[i]._cartas + self._cartas)
+            print(valores_numericos)
+            self.distribuir_para_vencedores(valores_numericos)
+
+            rodada = input("Deseja jogar mais uma rodada? (Y/N)")
+
             if rodada == "Y":
-                print("começando novo set")
+                print("Começando novo set")
+                self._cartas.clear()
+                self.fichas = 0
+                # colocando os jogadores na ordem original
+                self._lista_de_jogadores.clear()
+                for i in range(len(posiçoes_iniciais)):
+                    self._lista_de_jogadores.append(posiçoes_iniciais[i])
+
+                self.exibir_acoes()
             else:
                 print("fim de jogo")
                 break
-
-    
-   
     
     #menu que mostra as fichas dos jogadores
     def exibir_acoes(self):
@@ -112,6 +181,11 @@ class Mesa:
         print()
         desenha_linha()
         
+        print(f'fichas no pote: {self.fichas}.')
+        desenha_linha()
+        
+    def exibir_cartas_comunitarias(self):
+        print(f'Fichas comunitarias: {self._cartas}')
 
     # getter de "_fichas"
     @property

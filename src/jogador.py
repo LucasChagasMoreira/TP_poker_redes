@@ -1,9 +1,9 @@
-from Deck import *  # Importa a classe Deck de um módulo chamado Deck
+from funcoes_auxiliares import *  # Importa a classe Deck de um módulo chamado Deck
 
 
 class jogador():
     def __init__(self, nome, fichas, fichasapostadas):
-        self.cartas = Deck()  # Inicializa a variável cartas com uma instância da classe Deck
+        self._cartas = []  # Inicializa a variável cartas com uma instância da classe Deck
         self._nome = nome  # Atributo privado para armazenar o nome do jogador
         self._fichas = fichas  # Atributo privado para armazenar a quantidade de fichas do jogador
         self._fichasapostadas = fichasapostadas  # Atributo privado para armazenar as fichas apostadas pelo jogador
@@ -56,35 +56,45 @@ class jogador():
                 self.fichasapostadas = aposta
                 return aposta
 
-    #
-    def jogada(self,maioraposta):
-        print(f'jogador {self.nome}:')
-        menu_jogada()
-        while(True):
-            escolha = input()
-            if escolha == "1":
-                self.holdar()
-                break
-
-            elif escolha == '2':
-                self.desistir()
-                return '2'
-
-            elif escolha == '3':
-                if self.fichas < maioraposta:
-                    print("fichas insuficientes")
-                else:
-                    self.call(maioraposta)
-                    break
-
-            elif escolha == '4':
-                maioraposta = self.aumentar_apostar()
-                return '4', maioraposta
-
+    def exibir_cartas(self):
+        print(f'cartas do jogador: {self._cartas}')
 
     # aposta um valor identico a aposta atual
     def call(self,aposta_atual):
         self.fichasapostadas = aposta_atual
+
+    # funçao que reune todas as funçoes de envolvendo jogadas
+    def jogada(self,maioraposta):
+        print(f'jogador {self.nome}:')
+        while(True):
+            menu_jogada()
+            escolha = input()
+            if escolha == "1":
+                self.holdar()
+                return 0,0
+
+            elif escolha == '2':
+                self.desistir()
+                return '2' , 0
+
+            elif escolha == '3':
+                if self.fichas < maioraposta:
+                    print("fichas insuficientes.\n")
+                else:
+                    self.call(maioraposta)
+                    return '3',maioraposta
+
+            elif escolha == '4':
+                while(True):
+                    aposta = self.aumentar_apostar()
+                    if aposta <= maioraposta:
+                        print(f"voce deve apostar um valor maior que {maioraposta}.\n") 
+                    else:
+                        return '4', aposta
+            
+            else:
+                print("escolha invalida, digite novamente")
+    
 
     # subtrai o valor da aposta das fichas
     def descontaraposta(self):

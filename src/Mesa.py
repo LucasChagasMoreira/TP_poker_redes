@@ -78,11 +78,28 @@ class Mesa:
 
     def distribuir_para_vencedores(self,lista):
         indices = indices_do_maior(lista)
-        print(f'set do(s) jogadore(s): ')
-        for i in range(len(indices)):
-            self._lista_de_jogadores[indices[i]].fichas += (self.fichas / len(indices))
-            print(f'{self._lista_de_jogadores[indices[i]].nome} recebeu: {self.fichas / len(indices)} fichas.')
-            
+        aux = []
+
+        #caso haja empate
+        if len(indices) >= 2:
+            for i in range(len(indices)):
+               aux.append(carta_mais_alta(self._lista_de_jogadores[indices[i]]._cartas))
+            indices_desempate = indices_do_maior(aux)
+            print(indices)
+            print(aux)
+            print(indices_desempate)
+            print(f'set do(s) jogadore(s): ')
+            for i in range(len(indices_desempate)):
+                self._lista_de_jogadores[indices[indices_desempate[i]]].fichas += (self.fichas / len(indices_desempate))
+                print(f'{self._lista_de_jogadores[indices[indices_desempate[i]]].nome} recebeu: {self.fichas / len(indices_desempate)} fichas.')
+        #caso nao haja empate
+        else:
+            print(f'set do(s) jogadore(s): ')
+            for i in range(len(indices)):
+                self._lista_de_jogadores[indices[i]].fichas += (self.fichas)
+                print(f'{self._lista_de_jogadores[indices[i]].nome} recebeu: {self.fichas} fichas.')
+                
+
 
     #funçao pricipal do jogo
     def Iniciar_jogo(self):
@@ -111,15 +128,13 @@ class Mesa:
                    resultado_jogada = self._lista_de_jogadores[i].jogada(maioraposta)
                    desenha_linha()
 
-                   if resultado_jogada[0] == '2':
+                   if resultado_jogada[0] == '1':
                         desistentes.append(self._lista_de_jogadores[i].nome)
-                   elif resultado_jogada[0] == '3':
+                   elif resultado_jogada[0] == '2':
                        self.fichas += maioraposta
-                   elif resultado_jogada[0] == '4':
+                   elif resultado_jogada[0] == '3':
                        maioraposta = resultado_jogada[1]
                        self.fichas += maioraposta
-                       print(resultado_jogada)
-                       print(maioraposta)
 
 
                 self.exibir_acoes()
@@ -139,15 +154,21 @@ class Mesa:
             valores_numericos = self.definir_vencedor()
             for i in range(self.quantidadedejogadores()):
                 print(self._lista_de_jogadores[i]._cartas + self._cartas)
+
             print(valores_numericos)
+           
             self.distribuir_para_vencedores(valores_numericos)
 
             rodada = input("Deseja jogar mais uma rodada? (Y/N)")
 
             if rodada == "Y":
                 print("Começando novo set")
+
+                #resetando variaveis de jogo
                 self._cartas.clear()
                 self.fichas = 0
+                self.maioraposta = 0
+
                 # colocando os jogadores na ordem original
                 self._lista_de_jogadores.clear()
                 for i in range(len(posiçoes_iniciais)):

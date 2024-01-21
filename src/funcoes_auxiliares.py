@@ -9,10 +9,9 @@ def menu():
 
 def menu_jogada():
     print("Escolha uma opçao: \n")
-    print("1 - holdar")
-    print("2 - desistir")
-    print("3 - call")
-    print("4 - aumentar")
+    print("1 - desistir")
+    print("2 - call")
+    print("3 - aumentar")
 
 def criar_baralho():
         naipes = ['Copas', 'Paus', 'Espadas', 'Ouros']
@@ -39,7 +38,7 @@ def distribuir_cartas(baralho, quantidade):
     cartas_distribuidas = []
         
     for _ in range(quantidade):
-        carta = random.choice(baralho)
+        carta = baralho.pop(0)
         cartas_distribuidas.append(carta)
         
     return cartas_distribuidas
@@ -122,20 +121,20 @@ def possui_quadra(mao):
 
 def possui_straight(mao):
     valores_mao = [carta[0] for carta in mao]
-    
+
     # Mapeia os valores das cartas para números para facilitar a verificação de sequência
     mapeamento_valores = {'Ás': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'Valete': 11, 'Rainha': 12, 'Rei': 13}
-    
+
     valores_numeros = [mapeamento_valores[valor] for valor in valores_mao]
-    
+
     # Ordena os valores
     valores_numeros.sort()
-    
-    # Verifica se há uma sequência consecutiva
+
+    # Verifica se há uma sequência consecutiva de cinco valores
     for i in range(len(valores_numeros) - 4):
-        if valores_numeros[i] == valores_numeros[i + 1] - 1 == valores_numeros[i + 2] - 2 == valores_numeros[i + 3] - 3 == valores_numeros[i + 4] - 4:
+        if valores_numeros[i:i+5] == list(range(valores_numeros[i], valores_numeros[i]+5)):
             return True
-    
+
     # Se não encontrar um straight, retorna False
     return False
 
@@ -178,13 +177,26 @@ def possui_royal_flush(mao):
 
 def indices_do_maior(lista):
     if not lista:
-        return None  # Retorna None se a lista estiver vazia
+        return []  # Retorna None se a lista estiver vazia
 
     maior_valor = max(lista)
     indices_maior = [i for i, valor in enumerate(lista) if valor == maior_valor]
     
     return indices_maior
 
+def carta_mais_alta(mao):
+    valores_mao = [carta[0] for carta in mao]
+
+    # Mapeia os valores das cartas para números para facilitar a comparação
+    mapeamento_valores = {'Ás': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'Valete': 11, 'Rainha': 12, 'Rei': 13}
+
+    # Converte os valores para números
+    valores_numeros = [mapeamento_valores[valor] for valor in valores_mao]
+
+    # Encontra o valor mais alto
+    maior_valor = max(valores_numeros)
+
+    return maior_valor
 
 
 

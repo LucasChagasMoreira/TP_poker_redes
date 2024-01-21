@@ -25,7 +25,7 @@ else:
     print("O jogador não possui um Full House.")
 
 # Exemplo de uso:
-mao_jogador = [('10', 'Copas'), ('8', 'Paus'), ('9', 'Espadas'), ('7', 'Ouros'), ('6', 'Paus')]
+mao_jogador = [('4', 'Ouros'), ('6', 'Espadas'), ('5', 'Ouros'), ('7', 'Copas'), ('8', 'Espadas'), ('4', 'Copas'), ('Rei', 'Copas')]
 
 if possui_straight(mao_jogador):
     print("O jogador possui um straight!")
@@ -65,5 +65,11 @@ if possui_flush(mao_jogador):
     print("O jogador possui um flush!")
 else:
     print("O jogador não possui um flush.")
+
+mao_jogador = [('Ás', 'Copas'), ('Rei', 'Paus'), ('10', 'Espadas'), ('7', 'Ouros'), ('4', 'Paus')]
+
+carta_mais_alta_mao = carta_mais_alta(mao_jogador)
+print(carta_mais_alta(mao_jogador))
+print(f"A carta mais alta na mão é: {carta_mais_alta_mao}")
 
 

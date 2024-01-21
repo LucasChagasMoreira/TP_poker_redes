@@ -69,28 +69,26 @@ class jogador():
         while(True):
             menu_jogada()
             escolha = input()
-            if escolha == "1":
-                self.holdar()
-                return 0,0
+
+
+            if escolha == '1':
+                self.desistir()
+                return '1' , 0
 
             elif escolha == '2':
-                self.desistir()
-                return '2' , 0
-
-            elif escolha == '3':
                 if self.fichas < maioraposta:
                     print("fichas insuficientes.\n")
                 else:
                     self.call(maioraposta)
-                    return '3',maioraposta
+                    return '2',maioraposta
 
-            elif escolha == '4':
+            elif escolha == '3':
                 while(True):
                     aposta = self.aumentar_apostar()
                     if aposta <= maioraposta:
                         print(f"voce deve apostar um valor maior que {maioraposta}.\n") 
                     else:
-                        return '4', aposta
+                        return '3', aposta
             
             else:
                 print("escolha invalida, digite novamente")

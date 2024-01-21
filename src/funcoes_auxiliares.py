@@ -4,14 +4,14 @@ def desenha_linha():
     print("---------------------------------------------------------------------------------------------------------------")
 
 def menu():
-    num = int(input("digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
+    num = int(input("Digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
     return num
 
 def menu_jogada():
     print("Escolha uma opçao: \n")
-    print("1 - desistir")
-    print("2 - call")
-    print("3 - aumentar")
+    print("1 - Desistir")
+    print("2 - Pagar mesa")
+    print("3 - Aumentar")
 
 def criar_baralho():
         naipes = ['Copas', 'Paus', 'Espadas', 'Ouros']

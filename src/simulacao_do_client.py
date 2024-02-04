@@ -2,11 +2,13 @@ import socket
 import threading
 from constantes import *
 
+
 def titulo():
     print("************************************")
     print("**  Bem-vindo a Partida de Poker  **")
     print("**        Texas no Limit          **")
     print("************************************")
+    print("Aguardando jogadores....")
 
 #objeto socket
 #AF_INET especifica o tipo de endereço que o objeto ira receber

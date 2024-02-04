@@ -42,7 +42,7 @@ def conectar_jogadores():
     enderecos = []
     lista_threads = []
     qtd_threads = 0
-    while qtd_threads < 2 and time.time() - start_time < 30:
+    while qtd_threads < 2:
         threads_ativas = threading.active_count()-1
         #aceita conecçao com algum cliente
         connect,endereco = server.accept()
@@ -65,7 +65,6 @@ def conectar_jogadores():
     for thread in lista_threads:
             thread.join()
     
-    print(enderecos)
     return enderecos
     
 def envia_para_todos(mensagem,grupo_de_jogadores):
@@ -127,31 +126,4 @@ def requisita_jogada(dados):
     else:
         print(f"Cliente {dados[0]} não encontrado.")
     
-def rodada_jogadas(grupo_de_jogadores):
-    relatorio = ""
-    for i in grupo_de_jogadores:
-        escolha = requisita_jogada(i[0],i[1])
-        relatorio =f'jogador: {i[1]}, fez {escolha}\n'
-        envia_para_todos(relatorio,grupo_de_jogadores)
-    for i in grupo_de_jogadores:
-        funcao_de_encerramento(i[0])
-    return relatorio
-    
-def start(grupo_de_jogadores):
-    relatorio = rodada_jogadas(grupo_de_jogadores)
 
-def lobby():
-    server.listen()
-    print(f'[LISTENING] servidor escutando em {SERVER}')
-    while True:
-        print(f'preparando sala {threading.active_count()-1}')
-        
-        grupo_de_jogadores = conectar_jogadores()
-
-        thread = threading.Thread(target=start,args=(grupo_de_jogadores,))
-        thread.start()
-        print(f'[salas ativas] {threading.active_count()-1}')
-
-    for thread in threading.enumerate():
-        if thread != threading.current_thread():
-            thread.join()

@@ -12,7 +12,7 @@ def desenha_linha():
     return "==================================================================="
 
 def menu():
-    num = int(input("digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
+    num = int(input("Digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
     return num
 
 def menu_jogada():

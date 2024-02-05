@@ -67,7 +67,6 @@ class Mesa:
             self.Remover_jogador(indice_do_desistente)
 
         jogadores_auxiliar = [elemento for elemento in jogadores_auxiliar if elemento not in jogadores_desistentes]
-        print(f"Jogadores_auxiliar de dentro da funçao:{jogadores_auxiliar}")
         return jogadores_auxiliar
 
     def definir_vencedor(self):
@@ -81,7 +80,7 @@ class Mesa:
         
         return valores_numericos
 
-    def distribuir_para_vencedores(self,lista):
+    def distribuir_para_vencedores(self,lista,jogadores):
         indices = indices_do_maior(lista)
         aux = []
 
@@ -90,10 +89,6 @@ class Mesa:
             for i in range(len(indices)):
                aux.append(carta_mais_alta(self._lista_de_jogadores[indices[i]]._cartas))
             indices_desempate = indices_do_maior(aux)
-            print(indices)
-            print(aux)
-            print(indices_desempate)
-            print(f'set do(s) jogadore(s): ')
             for i in range(len(indices_desempate)):
                 
                 self._lista_de_jogadores[indices[indices_desempate[i]]].fichas += (self.fichas / len(indices_desempate))
@@ -103,7 +98,6 @@ class Mesa:
                 envia_para_todos(f'{self._lista_de_jogadores[indices[indices_desempate[i]]].nome} venceu e recebeu: {self.fichas / len(indices_desempate)} fichas.',jogadores)
         #caso nao haja empate
         else:
-            print(f'set do(s) jogadore(s): ')
             for i in range(len(indices)):
                 self._lista_de_jogadores[indices[i]].fichas += (self.fichas)
                 envia_para_todos(f'{self._lista_de_jogadores[indices[i]].nome} venceu e recebeu: {self.fichas} fichas.',jogadores)
@@ -121,7 +115,6 @@ class Mesa:
         for i in self._lista_de_jogadores:
             envia_para_todos(f"jogador: {i.nome} -- fichas: {i.fichas}",jogadores)
 
-        print(self._lista_de_jogadores)
         desistentes = []
         jogadores_desistentes = []
         #copiando as posiçoes originais dos jogadores
@@ -131,7 +124,7 @@ class Mesa:
             posiçoes_iniciais.append(self._lista_de_jogadores[i])
             jogadores_auxiliar.append(jogadores[i])
 
-        print(jogadores_auxiliar)
+
         while(True):
             self.distribuir_cartas_para_jogadores()
             for j in range(3):
@@ -155,7 +148,6 @@ class Mesa:
                    if resultado_jogada[0] == '1':
                         desistentes.append(self._lista_de_jogadores[i].nome)
                         jogadores_desistentes.append(jogadores_auxiliar[i])
-                        print(f"JOGADOR QUE DESISTIU{jogadores_desistentes}")
                         envia_para_todos(f"O jogador {jogadores_auxiliar[i][1]} desistiu\n",jogadores_auxiliar)
                    elif resultado_jogada[0] == '2':
                        self.fichas += maioraposta
@@ -192,7 +184,7 @@ class Mesa:
             envia_para_todos(f"mao mais forte presente: {next(chave for chave, valor in mapeamento_de_maos.items() if valor == max(valores_numericos))}",jogadores)
             print(valores_numericos)
            
-            self.distribuir_para_vencedores(valores_numericos)
+            self.distribuir_para_vencedores(valores_numericos,jogadores)
 
             ##################################################################################################
 
@@ -287,10 +279,23 @@ class Mesa:
         self._fichas = novas_fichas
 
 
-mesa = Mesa(0) 
-server.listen()
-jogadores = conectar_jogadores()
+def lobby():
 
-mesa.Iniciar_jogo(jogadores)
+    server.listen()
+    print(f'[LISTENING] servidor escutando em {SERVER}')
+    while True:
+        print(f'preparando sala {threading.active_count()-1}')
+        
+        grupo_de_jogadores = conectar_jogadores()
 
+        thread = threading.Thread(target=cria_partida,args=(grupo_de_jogadores,))
+        thread.start()
+        print(f'[salas ativas] {threading.active_count()-1}')
+
+
+def cria_partida(jogadores):
+    mesa = Mesa(0) 
+    mesa.Iniciar_jogo(jogadores)
+
+lobby()
 

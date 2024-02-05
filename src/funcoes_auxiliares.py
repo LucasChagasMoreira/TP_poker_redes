@@ -2,18 +2,10 @@ import random
 mapeamento_de_maos = {'royale_flush': 9, 'straight_flush': 8, 'quadra': 7, 'full_house': 6, 'flush': 5, 'straight':4, 'trinca':3, 'dois_pares':2, 'dupla':1, 'carta_alta':0}
 mapeamento_valores = {'Ás': 14, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'Valete': 11, 'Rainha': 12, 'Rei': 13}
 
-def titulo():
-    print("************************************")
-    print("**  Bem-vindo a Partida de Poker  **")
-    print("**        Texas no Limit          **")
-    print("************************************")
 
 def desenha_linha():
     return "==================================================================="
 
-def menu():
-    num = int(input("Digite quantos pessoas irao jogar o jogo (de 1 a 6):\n"))
-    return num
 
 def menu_jogada():
     return("Escolha uma opção: \n\n1 - desistir\n2 - pagar a mesa\n3 - aumentar")

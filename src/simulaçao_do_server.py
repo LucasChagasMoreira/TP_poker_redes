@@ -17,7 +17,7 @@ conexoes = {}
 
 def handle_client(connect,endereco,enderecos):
 
-    enviar_mensagem(connect,"digite seu nome jogador")
+    enviar_mensagem(connect,"Digite seu nome jogador")
     nome = receber_mensagem(connect)
     receber_mensagem(connect)
 
@@ -95,7 +95,7 @@ def envia_para_todos_menos_um(mensagem,grupo_de_jogadores,excluido):
                 # Lidar com a exceção se a conexão estiver fechada ou ocorrer um erro de envio
                 print(f"Erro ao enviar mensagem para {endereco}")
         else:
-            print(f"mensagem nao foi enviada para o {endereco}.")
+            print(f"Mensagem nao foi enviada para o {endereco}.")
 
 def funcao_de_encerramento(endereco):
     global conexoes

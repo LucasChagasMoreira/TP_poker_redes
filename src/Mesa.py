@@ -25,14 +25,14 @@ class Mesa:
     # exibe as fichas e os nomes dos jogaores
     def exibirjogadores(self):
         for i in range(self.quantidadedejogadores()):
-            print(f'jogador {i+1}: ')
-            print(f'nome: {self._lista_de_jogadores[i].nome}')
-            print(f'fichas: {self._lista_de_jogadores[i].fichas}')
+            print(f'Jogador {i+1}: ')
+            print(f'Nome: {self._lista_de_jogadores[i].nome}')
+            print(f'Fichas: {self._lista_de_jogadores[i].fichas}')
 
     # adiciona varios jogadores em sequencia
     def addjogadores(self,num):
         for i in range(num):
-            nome = input(f'digite o nome do jogador {i+1}:')
+            nome = input(f'Digite o nome do jogador {i+1}:')
             aux = jogador(nome,1000,0)
             self.Adiciona_jogador(aux)
 
@@ -63,7 +63,7 @@ class Mesa:
     def removerdesistentes(self,desistentes):
         for i in range(len(desistentes)):
             indice_do_desistente = self.indice_jogador(desistentes[i])
-            print(f'jogador {self._lista_de_jogadores[indice_do_desistente].nome}, desistiu.')
+            print(f'Jogador {self._lista_de_jogadores[indice_do_desistente].nome}, desistiu.')
             self.Remover_jogador(indice_do_desistente)
 
     def definir_vencedor(self):
@@ -176,22 +176,22 @@ class Mesa:
 
                 self.exibir_acoes()
             else:
-                print("fim de jogo")
+                print("Fim de jogo")
                 break
     
     #menu que mostra as fichas dos jogadores
     def exibir_acoes(self):
-        print(f'ações feitas')
+        print(f'Ações feitas')
         
         desenha_linha()
         for i in range(self.quantidadedejogadores()):
-            print(f'jogadores: {self._lista_de_jogadores[i].nome} | ',end="")
+            print(f'Jogadores: {self._lista_de_jogadores[i].nome} | ',end="")
 
         print()  
         desenha_linha()
 
         for i in range(self.quantidadedejogadores()):
-            print(f'fichas: {self._lista_de_jogadores[i].fichas} | ', end="")
+            print(f'Fichas: {self._lista_de_jogadores[i].fichas} | ', end="")
         
         print()
         desenha_linha()
@@ -202,7 +202,7 @@ class Mesa:
         print()
         desenha_linha()
         
-        print(f'fichas no pote: {self.fichas}.')
+        print(f'Fichas no pote: {self.fichas}.')
         desenha_linha()
         
     def exibir_cartas_comunitarias(self):

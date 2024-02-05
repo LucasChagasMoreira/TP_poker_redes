@@ -176,12 +176,12 @@ class Mesa:
                 envia_para_todos(desenha_linha(),jogadores)
             ##################################################################################################            
             valores_numericos = self.definir_vencedor()
-            envia_para_todos("melhores maos dos jogadores:",jogadores)
+            envia_para_todos("Melhores maos dos jogadores:",jogadores)
             for i in range(self.quantidadedejogadores()):
                 mao_correspondente = next(chave for chave, valor in mapeamento_de_maos.items() if valor == valores_numericos[i])
                 envia_para_todos(f"O jogador {self._lista_de_jogadores[i].nome} possui {mao_correspondente}",jogadores)
 
-            envia_para_todos(f"mao mais forte presente: {next(chave for chave, valor in mapeamento_de_maos.items() if valor == max(valores_numericos))}",jogadores)
+            envia_para_todos(f"Mão mais forte presente: {next(chave for chave, valor in mapeamento_de_maos.items() if valor == max(valores_numericos))}",jogadores)
             print(valores_numericos)
            
             self.distribuir_para_vencedores(valores_numericos,jogadores)
@@ -196,7 +196,7 @@ class Mesa:
                 escolha = requisita_jogada(jogadores[i])
 
                 if escolha == 'Y':
-                    envia_para_todos_menos_um(f'jogador {jogadores[i][1]} ira participar da proxima rodada',jogadores,jogadores[i])
+                    envia_para_todos_menos_um(f'Jogador {jogadores[i][1]} ira participar da proxima rodada',jogadores,jogadores[i])
                     i += 1
                 elif escolha == 'N':
                     envia_para_todos_menos_um(f'O jogador {jogadores[i][1]} ira se retirar da seçao',jogadores,jogadores[i])
@@ -205,7 +205,7 @@ class Mesa:
                     jogadores.pop(i)
                     posiçoes_iniciais.pop(i)
                 else:
-                    enviar_para_jogador(jogadores[i],"faça uma escolha valida")
+                    enviar_para_jogador(jogadores[i],"Faça uma escolha valida")
             
 
             envia_para_todos("Começando novo set",jogadores)
@@ -225,7 +225,7 @@ class Mesa:
                 jogadores_auxiliar.append(jogadores[i])
             
             if len(jogadores) <= 1:
-                envia_para_todos("a seçao presisa de mais de 1 jogador para ocorrer, portanto ela fechara",jogadores)
+                envia_para_todos("A seçao presisa de mais de 1 jogador para ocorrer, portanto ela fechara",jogadores)
                 funcao_de_encerramento(jogadores[0])
                 return
 
@@ -284,7 +284,7 @@ def lobby():
     server.listen()
     print(f'[LISTENING] servidor escutando em {SERVER}')
     while True:
-        print(f'preparando sala {threading.active_count()-1}')
+        print(f'Preparando sala {threading.active_count()-1}')
         
         grupo_de_jogadores = conectar_jogadores()
 

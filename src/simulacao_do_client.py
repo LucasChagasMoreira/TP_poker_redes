@@ -21,7 +21,7 @@ def cadastro():
     nome = input()
     enviar_mensagem(client,nome)
 
-    print("digite qualquer coisa para continuar")
+    print("Digite qualquer coisa para continuar")
     input()
     enviar_mensagem(client,'confirmado')
     
@@ -39,7 +39,7 @@ def inicio_do_jogo():
         elif primeiro_comando == "end":
             return
         else:
-            print("algo de errado aconteceu")
+            print("Algo de errado aconteceu")
 
 
 cadastro()

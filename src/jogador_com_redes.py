@@ -47,14 +47,22 @@ class jogador():
 
     # aposta um valor maior que a aposta atual
     def aumentar_apostar(self,jogador):
+        enviar_para_jogador(jogador,"digite o valor que deseja apostar:\n")
         while(True):
-            enviar_para_jogador(jogador,"digite o valor que deseja apostar:\n")
-            aposta = int(requisita_jogada(jogador))
-            if aposta > self.fichas:
-                enviar_para_jogador(jogador,"quantidade de fichas invalida, insira outro valor\n")
-            else:
-                self.fichasapostadas = aposta
-                return aposta
+            
+            aposta = (requisita_jogada(jogador))
+
+            try:
+                aposta = int(aposta)
+                if aposta > self.fichas:
+                    enviar_para_jogador(jogador,"quantidade de fichas invalida, insira outro valor\n")
+                else:
+                    self.fichasapostadas = aposta
+                    return aposta
+                
+            except ValueError:
+                enviar_para_jogador(jogador,"Digite um numero")
+            
 
     def exibir_cartas(self):
         return f'cartas do jogador: {self._cartas}\n'

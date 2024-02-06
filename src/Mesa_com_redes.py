@@ -106,7 +106,7 @@ class Mesa:
 
     #funçao pricipal do jogo
     def Iniciar_jogo(self,jogadores):
-        
+        tempo_inicial = time.time()
         maioraposta = 0
         self.addjogadores(jogadores)
 
@@ -176,18 +176,22 @@ class Mesa:
                 envia_para_todos(desenha_linha(),jogadores)
             ##################################################################################################            
             valores_numericos = self.definir_vencedor()
-            envia_para_todos("Melhores maos dos jogadores:",jogadores)
+            envia_para_todos("Melhores maos dos jogadores:\n",jogadores)
             for i in range(self.quantidadedejogadores()):
                 mao_correspondente = next(chave for chave, valor in mapeamento_de_maos.items() if valor == valores_numericos[i])
                 envia_para_todos(f"O jogador {self._lista_de_jogadores[i].nome} possui {mao_correspondente}",jogadores)
-
-            envia_para_todos(f"Mão mais forte presente: {next(chave for chave, valor in mapeamento_de_maos.items() if valor == max(valores_numericos))}",jogadores)
+            envia_para_todos(desenha_linha(),jogadores)
+            envia_para_todos("Decidindo vencedores:\n",jogadores)
+            if len(jogadores_auxiliar) != 0:
+                envia_para_todos(f"Mão mais forte presente: {next(chave for chave, valor in mapeamento_de_maos.items() if valor == max(valores_numericos))}",jogadores)
+            else:
+                envia_para_todos(f"Todos os jogadores sairam da sessao",jogadores)
             print(valores_numericos)
            
             self.distribuir_para_vencedores(valores_numericos,jogadores)
-
+            
             ##################################################################################################
-
+            envia_para_todos(desenha_linha(),jogadores)
             #gambiarra extrema para lidar com jogadores levando a sessao
             i = 0
             while i < len(jogadores):
@@ -201,6 +205,10 @@ class Mesa:
                 elif escolha == 'N':
                     envia_para_todos_menos_um(f'O jogador {jogadores[i][1]} ira se retirar da seçao',jogadores,jogadores[i])
                     enviar_para_jogador(jogadores[i],"encerrando...")
+                    enviar_para_jogador(jogadores[i],"\n" + desenha_linha())
+                    enviar_para_jogador(jogadores[i],"Relatorio da partida:\n")
+                    enviar_para_jogador(jogadores[i],f"Tempo de partida: {(time.time()-tempo_inicial)/60:.2f} min")
+                    enviar_para_jogador(jogadores[i],f"Voce entrou com 1000 e saiu com: {posiçoes_iniciais[i].fichas}")
                     funcao_de_encerramento(jogadores[i])
                     jogadores.pop(i)
                     posiçoes_iniciais.pop(i)
@@ -224,11 +232,12 @@ class Mesa:
             for i in range(len(jogadores)):
                 jogadores_auxiliar.append(jogadores[i])
             
-            if len(jogadores) <= 1:
+            if len(jogadores) == 1:
                 envia_para_todos("A seçao presisa de mais de 1 jogador para ocorrer, portanto ela fechara",jogadores)
                 funcao_de_encerramento(jogadores[0])
                 return
-
+            elif len(jogadores) == 0:
+                return
     #menu que mostra as fichas dos jogadores
     def exibir_acoes(self):
         mensagem = ""

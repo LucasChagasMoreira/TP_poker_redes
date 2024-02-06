@@ -74,11 +74,15 @@ class jogador():
     # funçao que reune todas as funçoes de envolvendo jogadas
     def jogada(self,maioraposta,jogador):
         print(f'jogador {self.nome}:')
-        while(True):
+        while(True):          
+            if self.fichas < maioraposta:
+                enviar_para_jogador(jogador,"A sua quantidade de fichas é menor que a aposta atual, apostara as fichas restantes")
+                return '0' , 0  
             enviar_para_jogador(jogador,menu_jogada())
             escolha = requisita_jogada(jogador)
             print(escolha)
-
+            
+            
             if escolha == '1':
                 enviar_para_jogador(jogador,self.desistir())
                 return '1' , 0

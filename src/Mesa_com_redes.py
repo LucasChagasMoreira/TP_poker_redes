@@ -127,6 +127,8 @@ class Mesa:
 
         while(True):
             self.distribuir_cartas_para_jogadores()
+            #envia_para_todos(f"O small blind:{self._lista_de_jogadores[self.quantidadedejogadores()-1].nome} ira definir a primeira aposta")
+            #requisita_jogada(jogadores[self.quantidadedejogadores()-1])
             for j in range(3):
 
                 envia_para_todos(desenha_linha(),jogadores_auxiliar)
@@ -145,7 +147,9 @@ class Mesa:
                    resultado_jogada = self._lista_de_jogadores[i].jogada(maioraposta,jogadores_auxiliar[i])
                    enviar_para_jogador(jogadores_auxiliar[i],desenha_linha())
 
-                   if resultado_jogada[0] == '1':
+                   if resultado_jogada[0] == '0':
+                      self._lista_de_jogadores[i].fichasapostadas = self._lista_de_jogadores[i].fichas 
+                   elif resultado_jogada[0] == '1':
                         desistentes.append(self._lista_de_jogadores[i].nome)
                         jogadores_desistentes.append(jogadores_auxiliar[i])
                         envia_para_todos(f"O jogador {jogadores_auxiliar[i][1]} desistiu\n",jogadores_auxiliar)
@@ -234,6 +238,10 @@ class Mesa:
             
             if len(jogadores) == 1:
                 envia_para_todos("A seçao presisa de mais de 1 jogador para ocorrer, portanto ela fechara",jogadores)
+                enviar_para_jogador(jogadores[0],"\n" + desenha_linha())
+                enviar_para_jogador(jogadores[0],"Relatorio da partida:\n")
+                enviar_para_jogador(jogadores[0],f"Tempo de partida: {(time.time()-tempo_inicial)/60:.2f} min")
+                enviar_para_jogador(jogadores[0],f"Voce entrou com 1000 e saiu com: {posiçoes_iniciais[0].fichas}")
                 funcao_de_encerramento(jogadores[0])
                 return
             elif len(jogadores) == 0:
